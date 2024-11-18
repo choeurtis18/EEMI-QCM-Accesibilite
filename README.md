@@ -58,7 +58,7 @@ export default function Page() {
 - [ ] e) `<span>`
 - [ ] f) `<footer>`
 
-4. Quel est la façon correcte d'afficher pour un groupe de champs de formulaire liés ?
+4. Quel est est la meilleure façon d'afficher un groupe de champs de formulaire liés ?
 - [ ] a) role="group"
 - [ ] b) role="fieldset"
 - [ ] c) role="form"
