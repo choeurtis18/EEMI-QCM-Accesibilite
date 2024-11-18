@@ -4,7 +4,7 @@
 - Cochez les cases correspondant à vos réponses en remplaçant [ ] par [x]
 - Les questions à choix multiples sont précisées
 - Compléter le document et l'envoyer à l'adresse mail noelie.roux2@eemi.com
-- Prénom Nom : _______________________
+- Prénom Nom : Choeurtis Tchounga - CT0 M2
 
 ## 1. Fondamentaux de l'accessibilité
 
@@ -367,7 +367,7 @@ const handleClick = () => {
   </div>
 )}
 ```
-- [x] d)
+- [ ] d)
 ```javascript
 <div 
   role="alert"
@@ -617,6 +617,97 @@ Critères d'évaluation :
 - Gestion correcte du focus et navigation clavier
 - Structure des composants et props
 - Gestion de l'état
+
+Le composant
+```javascript
+import React, { useState } from 'react';
+
+interface AccordionHeaderProps {
+  id: string;
+  onClick: () => void;
+  isOpen: boolean;
+  children: React.ReactNode;
+}
+
+const AccordionHeader: React.FC<AccordionHeaderProps> = ({ id, onClick, isOpen, children }) => {
+  return (
+    <button
+      id={`${id}-header`}
+      aria-expanded={isOpen}
+      aria-controls={`${id}-panel`}
+      className="accordion-header"
+      onClick={onClick}
+    >
+      {children}
+      <span className="accordion-indicator">{isOpen ? '-' : '+'}</span>
+    </button>
+  );
+};
+
+interface AccordionPanelProps {
+  id: string;
+  isOpen: boolean;
+  children: React.ReactNode;
+}
+
+const AccordionPanel: React.FC<AccordionPanelProps> = ({ id, isOpen, children }) => {
+  return (
+    <div
+      id={`${id}-panel`}
+      role="region"
+      aria-labelledby={`${id}-header`}
+      hidden={!isOpen}
+      className="accordion-panel"
+    >
+      {children}
+    </div>
+  );
+};
+
+interface AccordionItemProps {
+  id: string;
+  children: React.ReactNode;
+}
+
+const AccordionItem: React.FC<AccordionItemProps> = ({ id, children }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleToggle = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  return (
+    <div className="accordion-item">
+      {React.Children.map(children, (child) => {
+        if ((child as React.ReactElement).type === AccordionHeader) {
+          return React.cloneElement(child as React.ReactElement, {
+            id,
+            onClick: handleToggle,
+            isOpen,
+          });
+        }
+        if ((child as React.ReactElement).type === AccordionPanel) {
+          return React.cloneElement(child as React.ReactElement, {
+            id,
+            isOpen,
+          });
+        }
+        return child;
+      })}
+    </div>
+  );
+};
+
+interface AccordionProps {
+  children: React.ReactNode;
+}
+
+const Accordion: React.FC<AccordionProps> = ({ children }) => {
+  return <div className="accordion">{children}</div>;
+};
+
+export { Accordion, AccordionItem, AccordionHeader, AccordionPanel };
+```
 
 ## Bonus
 
